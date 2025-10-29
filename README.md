@@ -21,23 +21,36 @@
 * **N = ATR(p_atr, fuente=high,low,close)** en el **timeframe de ejecución**.
 * Valores típicos: `p_atr = 14` (rápido) o `21` (más suave).
 * **Volatility clamp** (filtro): habilitar entradas solo si
-  [
-  0.6 \le \frac{ATR_{p}}{SMA(ATR_{p},,p_{atr_ma})} \le 2.2
-  ]
-  con `p_atr_ma = 20`. (Evita chop extremo o sobre-volatilidad).
+  
+<p align="center">
+  <img src="https://latex.codecogs.com/svg.image?0.6%20%5Cle%20%5Cfrac%7BATR_%7Bp%7D%7D%7BSMA(ATR_%7Bp%7D%2C%20p_%7Batr_ma%7D)%7D%20%5Cle%202.2" alt="ATR clamp" />
+</p> 
+con `p_atr_ma = 20`. (Evita chop extremo o sobre-volatilidad).
+
 
 3. **Dimensionamiento de Posición** (riesgo fijo 1–2% del capital)
 
 * Riesgo monetario por trade:
-  [
-  R$ = capital \times riesgo_{por_op} \quad (\text{ej. } 0.01 \text{ o } 0.02)
-  ]
-* **Stop técnico inicial** (ver Sección 3): (\text{SL_dist} = k_{SL}\cdot N) (ej. (k_{SL}=1.5)).
+<p align="center">
+  <img src="https://latex.codecogs.com/svg.image?R%5C%24%20%3D%20capital%20%5Ctimes%20riesgo_%7B%5Ctext%7Bpor%5C_op%7D%7D" alt="Riesgo monetario por trade" />
+</p>
+  
+* **Stop técnico inicial** (ver Sección 3): <p align="center">
+  <img src="https://latex.codecogs.com/svg.image?SL_%7Bdist%7D%20%3D%20k_%7BSL%7D%20%5Ccdot%20N" alt="SL distance" />
+</p>
+ (ej. <p align="center">
+  <img src="https://latex.codecogs.com/svg.image?%5Ctextbf%7BQ%7D%20=%20%5Cfrac%7BA%20%5Ctimes%20r%7D%7BATR%20%5Ctimes%201.5%7D" alt="Q con k_SL=1.5" />
+</p>).
+ 
 * **Tamaño** (Spot/Perp USDT-margined):
-  [
-  qty = \frac{R$}{SL_dist \times \text{valor_por_unidad}}
-  ]
-  donde (\text{valor_por_unidad} \approx precio) en contratos lineales.
+<p align="center">
+  <img src="https://latex.codecogs.com/svg.image?%5Cmathbf%7BQ%7D%20%3D%20%5Cfrac%7BA%20%5Ctimes%20r%7D%7B%5Cmathrm%7BATR%7D%20%5Ctimes%20k%7D" alt="Q Formula (simple)" />
+</p>
+  donde (<p align="center">
+  <img src="https://latex.codecogs.com/svg.image?%5Ctext%7Bvalor_por_unidad%7D%20%5Capprox%20precio" alt="valor_por_unidad ≈ precio" />
+</p>
+
+) en contratos lineales.
 * **Cap**: respetar **tamaño máximo** por liquidez y **riesgo de cola** (ej. `qty_max_usd = 5% del capital`).
 
 > *Tip Turtle opcional (piramidación):* hasta **4 unidades**, añadiendo 0.5–1.0N a favor; cada add con su propio SL de cartera. En 1m/5m úsalo con prudencia.
